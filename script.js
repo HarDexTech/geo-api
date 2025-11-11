@@ -3,6 +3,7 @@
 const findLocationButton = document.getElementById("findLocationButton");
 const output = document.getElementById("outputContainer");
 const apikey = "1667a20e1c5a4ec3b1d7e6b58dcb164f";
+let map = null; // global map variable
 
 const getLocation = () => {
   // get location
@@ -42,8 +43,11 @@ const getLocation = () => {
       <div>Continent: ${results[0].components.continent}</div>
       `;
 
+        if (map) {
+          map.remove(); //remove existing map
+        }
         //   create map view
-        var map = L.map("map").setView([lat, lon], 13);
+        map = L.map("map").setView([lat, lon], 13);
 
         // add tiles to map
         L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {

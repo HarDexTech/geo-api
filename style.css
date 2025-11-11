@@ -67,4 +67,8 @@ button:focus {
 }
 #map {
   height: 180px;
+  margin-bottom: 30px;
+}
+p {
+  font-size: 12px;
 }
