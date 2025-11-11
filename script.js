@@ -26,11 +26,14 @@ const getLocation = () => {
         //success
         const results = data.results;
 
+        const lat = results[0].geometry.lat;
+        const lon = results[0].geometry.lng;
+
         output.innerHTML = `
       <div>Country: ${results[0].components.country}</div>
       <div>Address: ${results[0].formatted}</div>
-      <div>Latitude: ${results[0].geometry.lat}</div>
-      <div>Longitude: ${results[0].geometry.lng}</div>
+      <div>Latitude: ${lat}</div>
+      <div>Longitude: ${lon}</div>
       <div>Time Zone: ${results[0].annotations.timezone.name}</div>
       <div>Type: ${results[0].components._type}</div>
       <div>Category: ${results[0].components._category}</div>
@@ -38,6 +41,19 @@ const getLocation = () => {
       <div>City: ${results[0].components.city}</div>
       <div>Continent: ${results[0].components.continent}</div>
       `;
+
+        //   create map view
+        var map = L.map("map").setView([lat, lon], 13);
+
+        // add tiles to map
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        }).addTo(map);
+
+        //add marker to coordinates
+        var marker = L.marker([lat, lon]).addTo(map);
       } else if (data.status.code <= 500) {
         // We reached our target server, but it returned an error
 

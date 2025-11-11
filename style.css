@@ -65,3 +65,6 @@ button:focus {
   flex-direction: column;
   gap: 10px;
 }
+#map {
+  height: 180px;
+}
