@@ -3,6 +3,7 @@
 const findLocationButton = document.getElementById("findLocationButton");
 const output = document.getElementById("outputContainer");
 const apikey = "1667a20e1c5a4ec3b1d7e6b58dcb164f";
+const copyCoordinatesButton = document.getElementById("copyCoordinates");
 let map = null; // global map variable
 
 const getLocation = () => {
@@ -84,3 +85,14 @@ function reset() {
   output.innerHTML = "";
 }
 document.getElementById("reset").addEventListener("click", reset);
+
+// copy coordinates to clipboard
+copyCoordinatesButton.addEventListener("click", function () {
+  const latText = output.querySelector("div:nth-child(3)").innerText;
+  const lonText = output.querySelector("div:nth-child(4)").innerText;
+  const lat = latText.split(": ")[1];
+  const lon = lonText.split(": ")[1];
+
+  navigator.clipboard.writeText(`${lat}, ${lon}`);
+  alert("Coordinates copied!");
+});

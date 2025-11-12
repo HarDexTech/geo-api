@@ -44,6 +44,14 @@ button:hover {
 button:active {
   transform: scale(0.9);
 }
+#copyCoordinates,
+#reset {
+  width: calc(var(--defWidth) / 2);
+}
+.contain {
+  display: flex;
+  gap: 10px;
+}
 input {
   width: var(--defWidth);
   padding: calc(var(--defWidth) / 10);
