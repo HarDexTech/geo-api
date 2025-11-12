@@ -2,7 +2,7 @@
 
 const findLocationButton = document.getElementById("findLocationButton");
 const output = document.getElementById("outputContainer");
-const apikey = "1667a20e1c5a4ec3b1d7e6b58dcb164f";
+const apikey = CONFIG.apiKey;
 const copyCoordinatesButton = document.getElementById("copyCoordinates");
 let map = null; // global map variable
 
