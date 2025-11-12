@@ -6,6 +6,9 @@ const apikey = "1667a20e1c5a4ec3b1d7e6b58dcb164f";
 const copyCoordinatesButton = document.getElementById("copyCoordinates");
 let map = null; // global map variable
 
+let currentLat = null;
+let currentLon = null;
+
 const getLocation = () => {
   // get location
   const input = document.getElementById(`inputLocation`).value;
@@ -30,6 +33,8 @@ const getLocation = () => {
 
         const lat = results[0].geometry.lat;
         const lon = results[0].geometry.lng;
+
+        [currentLat, currentLon] = [lat, lon];
 
         output.innerHTML = `
       <div>Country: ${results[0].components.country}</div>
@@ -83,16 +88,18 @@ document.querySelector("body").addEventListener("keydown", function (event) {
 function reset() {
   document.getElementById("inputLocation").value = "";
   output.innerHTML = "";
+  currentLat = null;
+  currentLon = null;
 }
 document.getElementById("reset").addEventListener("click", reset);
 
 // copy coordinates to clipboard
 copyCoordinatesButton.addEventListener("click", function () {
-  const latText = output.querySelector("div:nth-child(3)").innerText;
-  const lonText = output.querySelector("div:nth-child(4)").innerText;
-  const lat = latText.split(": ")[1];
-  const lon = lonText.split(": ")[1];
-
-  navigator.clipboard.writeText(`${lat}, ${lon}`);
+  // In copy function:
+  if (currentLat === null || currentLon === null) {
+    alert("No coordinates to copy!");
+    return;
+  }
+  navigator.clipboard.writeText(`${currentLat}, ${currentLon}`);
   alert("Coordinates copied!");
 });
