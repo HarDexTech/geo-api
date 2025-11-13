@@ -62,16 +62,6 @@ This project uses the [OpenCage Geocoding API](https://opencagedata.com/api):
 - **Rate Limit**: 2,500 requests/day (free tier)
 - **Response Format**: JSON
 
-## 📝 Code Structure
-
-```
-smart-location-finder/
-├── index.html          # Main HTML structure
-├── style.css           # Styling and layout
-├── script.js           # Application logic and API calls
-└── README.md           # Project documentation
-```
-
 ## 🎯 Key Learning Points
 
 This project demonstrates:
