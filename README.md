@@ -32,7 +32,7 @@ A web application that allows users to search for any location worldwide and get
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/smart-location-finder.git
+git clone https://github.com/HarDexTech/geo-api.git
 cd smart-location-finder
 ```
 
