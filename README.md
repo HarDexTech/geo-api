@@ -111,7 +111,7 @@ This project is open source and available under the [MIT License](LICENSE).
 **Your Name**
 
 - GitHub: [@HarDexTech](https://github.com/HarDexTech)
-- LinkedIn: [Your LinkedIn](https://www.linkedin.com/in/hardextech/)
+- LinkedIn: [Adesina Ayomide](https://www.linkedin.com/in/hardextech/)
 
 ## 🙏 Acknowledgments
 
