@@ -33,7 +33,7 @@ A web application that allows users to search for any location worldwide and get
 
 ```bash
 git clone https://github.com/HarDexTech/geo-api.git
-cd smart-location-finder
+cd geo-api
 ```
 
 2. Get a free API key from [OpenCage Data](https://opencagedata.com/api)
