@@ -1,15 +1,17 @@
-"use strict";
+'use strict';
 
-const findLocationButton = document.getElementById("findLocationButton");
-const output = document.getElementById("outputContainer");
+const findLocationButton = document.getElementById('findLocationButton');
+const output = document.getElementById('outputContainer');
 const apikey = CONFIG.apiKey;
-const copyCoordinatesButton = document.getElementById("copyCoordinates");
+const copyCoordinatesButton = document.getElementById('copyCoordinates');
 let map = null; // global map variable
+let lat;
+let lon;
 
 let currentLat = null;
 let currentLon = null;
 
-const getLocation = () => {
+function getLocation() {
   // get location
   const input = document.getElementById(`inputLocation`).value;
 
@@ -31,8 +33,8 @@ const getLocation = () => {
         //success
         const results = data.results;
 
-        const lat = results[0].geometry.lat;
-        const lon = results[0].geometry.lng;
+        lat = results[0].geometry.lat;
+        lon = results[0].geometry.lng;
 
         [currentLat, currentLon] = [lat, lon];
 
@@ -49,57 +51,61 @@ const getLocation = () => {
       <div>Continent: ${results[0].components.continent}</div>
       `;
 
-        if (map) {
-          map.remove(); //remove existing map
-        }
-        //   create map view
-        map = L.map("map").setView([lat, lon], 13);
-
-        // add tiles to map
-        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-          maxZoom: 19,
-          attribution:
-            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        }).addTo(map);
-
-        //add marker to coordinates
-        var marker = L.marker([lat, lon]).addTo(map);
+        //add the create map function
+        createOrUpdateMap(lat, lon);
       } else if (data.status.code <= 500) {
         // We reached our target server, but it returned an error
-
         output.innerHTML =
-          "unable to geocode! Response code: " + data.status.code;
+          'unable to geocode! Response code: ' + data.status.code;
       } else {
-        console.log("server error");
+        console.log('server error');
       }
     });
-  document.getElementById(`inputLocation`).value = "";
-};
-findLocationButton.addEventListener("click", getLocation);
+  document.getElementById(`inputLocation`).value = '';
+}
+findLocationButton.addEventListener('click', getLocation);
+
+function createOrUpdateMap(lat, lon) {
+  if (map) {
+    map.remove(); //remove existing map
+  }
+  //   create map view
+  map = L.map('map').setView([lat, lon], 13);
+
+  // add tiles to map
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution:
+      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(map);
+
+  //add marker to coordinates
+  var marker = L.marker([lat, lon]).addTo(map);
+}
 
 // allow enter key to submit
-document.querySelector("body").addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
+document.querySelector('input').addEventListener('keydown', function (event) {
+  if (event.key === 'Enter') {
     getLocation();
   }
 });
 
 // reset
 function reset() {
-  document.getElementById("inputLocation").value = "";
-  output.innerHTML = "";
+  document.getElementById('inputLocation').value = '';
+  output.innerHTML = '';
   currentLat = null;
   currentLon = null;
 }
-document.getElementById("reset").addEventListener("click", reset);
+document.getElementById('reset').addEventListener('click', reset);
 
 // copy coordinates to clipboard
-copyCoordinatesButton.addEventListener("click", function () {
+copyCoordinatesButton.addEventListener('click', function () {
   // In copy function:
   if (currentLat === null || currentLon === null) {
-    alert("No coordinates to copy!");
+    alert('No coordinates to copy!');
     return;
   }
   navigator.clipboard.writeText(`${currentLat}, ${currentLon}`);
-  alert("Coordinates copied!");
+  alert('Coordinates copied!');
 });

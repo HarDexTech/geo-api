@@ -17,10 +17,10 @@ body {
   justify-content: center;
   font-family: Arial, sans-serif;
   line-height: 1.6;
-  overflow-x: hidden;
-  flex-direction: column;
+  overflow: hidden;
   background-color: var(--bgColor);
   gap: 20px;
+  height: 100vh;
 }
 .container {
   display: flex;
@@ -28,6 +28,11 @@ body {
   align-items: center;
   justify-content: center;
   gap: 20px;
+  position: absolute;
+  right: 40%;
+  height: 100vh;
+  width: 60vw;
+  overflow-y: auto;
 }
 button {
   cursor: pointer;
@@ -74,9 +79,18 @@ button:focus {
   gap: 10px;
 }
 #map {
-  height: 180px;
-  margin-bottom: 30px;
+  border: 2px solid black;
+  position: absolute;
+  right: 0;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  display: grid;
+  place-items: center;
 }
 p {
   font-size: 12px;
+}
+#map h2 {
+  font-size: 36px;
+  z-index: -10000;
 }
