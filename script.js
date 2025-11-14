@@ -5,8 +5,12 @@ const output = document.getElementById('outputContainer');
 const apikey = CONFIG.apiKey;
 const copyCoordinatesButton = document.getElementById('copyCoordinates');
 let map = null; // global map variable
+
+//create an empty variable for latitude and longitude coordinates
 let lat;
 let lon;
+
+let results;
 
 function getLocation() {
   // get location
@@ -28,26 +32,14 @@ function getLocation() {
       console.log(data);
       if (data.status.code === 200) {
         //success
-        const results = data.results;
+        results = data.results;
 
         lat = results[0].geometry.lat;
         lon = results[0].geometry.lng;
 
-        output.innerHTML = `
-      <div>Country: ${results[0].components.country}</div>
-      <div>Address: ${results[0].formatted}</div>
-      <div>Latitude: ${lat}</div>
-      <div>Longitude: ${lon}</div>
-      <div>Time Zone: ${results[0].annotations.timezone.name}</div>
-      <div>Type: ${results[0].components._type}</div>
-      <div>Category: ${results[0].components._category}</div>
-      <div>State: ${results[0].components.state}</div>
-      <div>City: ${results[0].components.city}</div>
-      <div>Continent: ${results[0].components.continent}</div>
-      `;
+        updateOutputHTML(); //html function
 
-        //add the create map function
-        createOrUpdateMap(lat, lon);
+        createOrUpdateMap(lat, lon); //add the create map function
       } else if (data.status.code <= 500) {
         // We reached our target server, but it returned an error
         output.innerHTML =
@@ -60,6 +52,23 @@ function getLocation() {
 }
 findLocationButton.addEventListener('click', getLocation);
 
+//update the html in the output container
+function updateOutputHTML() {
+  output.innerHTML = `
+      <div>Country: ${results[0].components.country}</div>
+      <div>Address: ${results[0].formatted}</div>
+      <div>Latitude: ${lat}</div>
+      <div>Longitude: ${lon}</div>
+      <div>Time Zone: ${results[0].annotations.timezone.name}</div>
+      <div>Type: ${results[0].components._type}</div>
+      <div>Category: ${results[0].components._category}</div>
+      <div>State: ${results[0].components.state}</div>
+      <div>City: ${results[0].components.city}</div>
+      <div>Continent: ${results[0].components.continent}</div>
+      `;
+}
+
+//create and update map function
 function createOrUpdateMap(lat, lon) {
   if (map) {
     map.remove(); //remove existing map
