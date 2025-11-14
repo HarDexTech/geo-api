@@ -8,9 +8,6 @@ let map = null; // global map variable
 let lat;
 let lon;
 
-let currentLat = null;
-let currentLon = null;
-
 function getLocation() {
   // get location
   const input = document.getElementById(`inputLocation`).value;
@@ -35,8 +32,6 @@ function getLocation() {
 
         lat = results[0].geometry.lat;
         lon = results[0].geometry.lng;
-
-        [currentLat, currentLon] = [lat, lon];
 
         output.innerHTML = `
       <div>Country: ${results[0].components.country}</div>
@@ -94,18 +89,18 @@ document.querySelector('input').addEventListener('keydown', function (event) {
 function reset() {
   document.getElementById('inputLocation').value = '';
   output.innerHTML = '';
-  currentLat = null;
-  currentLon = null;
+  lat = null;
+  lon = null;
 }
 document.getElementById('reset').addEventListener('click', reset);
 
 // copy coordinates to clipboard
 copyCoordinatesButton.addEventListener('click', function () {
   // In copy function:
-  if (currentLat === null || currentLon === null) {
+  if (lat === null || lon === null) {
     alert('No coordinates to copy!');
     return;
   }
-  navigator.clipboard.writeText(`${currentLat}, ${currentLon}`);
+  navigator.clipboard.writeText(`${lat}, ${lon}`);
   alert('Coordinates copied!');
 });
