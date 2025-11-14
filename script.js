@@ -31,11 +31,10 @@ function getLocation() {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       // Check if API request was successful
       if (data.status.code === 200) {
         // Extract results from successful response
-        let results = data.results;
+        const results = data.results;
 
         // Extract latitude and longitude from first result
         lat = results[0].geometry.lat;
@@ -54,6 +53,10 @@ function getLocation() {
         // Handle unexpected server errors
         console.log('server error');
       }
+    })
+    .catch((error) => {
+      output.innerHTML = `<div class="error">Network error. Check your connection.</div>`;
+      console.error('Fetch failed:', error);
     });
 }
 // Attach click event listener to search button
