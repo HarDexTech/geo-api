@@ -10,8 +10,6 @@ let map = null; // global map variable
 let lat;
 let lon;
 
-let results;
-
 function getLocation() {
   // get location
   const input = document.getElementById(`inputLocation`).value;
@@ -32,12 +30,12 @@ function getLocation() {
       console.log(data);
       if (data.status.code === 200) {
         //success
-        results = data.results;
+        let results = data.results;
 
         lat = results[0].geometry.lat;
         lon = results[0].geometry.lng;
 
-        updateOutputHTML(); //html function
+        updateOutputHTML(results[0], lat, lon); //html function, receives location data, lat and lon from fetch
 
         createOrUpdateMap(lat, lon); //add the create map function
       } else if (data.status.code <= 500) {
@@ -52,19 +50,19 @@ function getLocation() {
 }
 findLocationButton.addEventListener('click', getLocation);
 
-//update the html in the output container
-function updateOutputHTML() {
+//update the html in the output container function
+function updateOutputHTML(locationData, latitude, longitude) {
   output.innerHTML = `
-      <div>Country: ${results[0].components.country}</div>
-      <div>Address: ${results[0].formatted}</div>
-      <div>Latitude: ${lat}</div>
-      <div>Longitude: ${lon}</div>
-      <div>Time Zone: ${results[0].annotations.timezone.name}</div>
-      <div>Type: ${results[0].components._type}</div>
-      <div>Category: ${results[0].components._category}</div>
-      <div>State: ${results[0].components.state}</div>
-      <div>City: ${results[0].components.city}</div>
-      <div>Continent: ${results[0].components.continent}</div>
+      <div>Country: ${locationData.components.country}</div>
+      <div>Address: ${locationData.formatted}</div>
+      <div>Latitude: ${latitude}</div>
+      <div>Longitude: ${longitude}</div>
+      <div>Time Zone: ${locationData.annotations.timezone.name}</div>
+      <div>Type: ${locationData.components._type}</div>
+      <div>Category: ${locationData.components._category}</div>
+      <div>State: ${locationData.components.state}</div>
+      <div>City: ${locationData.components.city}</div>
+      <div>Continent: ${locationData.components.continent}</div>
       `;
 }
 
