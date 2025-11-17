@@ -3,8 +3,14 @@
 // DOM Elements
 const findLocationButton = document.getElementById('findLocationButton');
 const output = document.getElementById('outputContainer');
+const historyOutput = document.getElementById('historyOutput');
+const historyList = document.getElementById('historyList');
 const apikey = CONFIG.apiKey;
 const copyCoordinatesButton = document.getElementById('copyCoordinates');
+
+let searchHistory = []; // array to store search history
+
+historyOutput.classList.add('invisible'); //hide history section initially
 
 // Global Variables
 let map = null; // global map variable for Leaflet map instance
@@ -45,6 +51,9 @@ function getLocation() {
 
         // Create or update the map with new coordinates
         createOrUpdateMap(lat, lon);
+
+        //add to history
+        addToHistory(input, lat, lon, results[0].formatted);
       } else if (data.status.code <= 500) {
         // Handle server errors (4xx and 5xx status codes)
         output.innerHTML =
@@ -58,6 +67,8 @@ function getLocation() {
       output.innerHTML = `<div class="error">Network error. Check your connection.</div>`;
       console.error('Fetch failed:', error);
     });
+
+  historyOutput.classList.remove('invisible'); //make history section visible when a search is made
 }
 // Attach click event listener to search button
 findLocationButton.addEventListener('click', getLocation);
@@ -132,3 +143,28 @@ copyCoordinatesButton.addEventListener('click', function () {
   // Confirm to user that coordinates were copied
   alert('Coordinates copied!');
 });
+
+//function to create history
+function addToHistory(input, lat, lon, address) {
+  historyList.innerHTML = ``; //empty the history list before adding new entry
+
+  const historyObject = new Object(); //create a new object to store history entry
+
+  //add properties to the history object
+  historyObject.Location = input;
+  historyObject.Latitude = lat;
+  historyObject.Longitude = lon;
+  historyObject.Address = address;
+
+  searchHistory.push(historyObject); //add the new history object to the search history array
+
+  //loop through the search history array and display each entry in the history list
+  for (let i = 0; i < searchHistory.length; i++) {
+    historyList.innerHTML += `<li><div class="history-item">
+    <strong>Location:</strong> ${searchHistory[i].Location},
+    <strong>Latitude:</strong> ${searchHistory[i].Latitude},
+    <strong>Longitude:</strong> ${searchHistory[i].Longitude},
+    <strong>Address:</strong> ${searchHistory[i].Address}
+  </div></li>`;
+  }
+}

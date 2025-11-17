@@ -17,7 +17,6 @@ body {
   justify-content: center;
   font-family: Arial, sans-serif;
   line-height: 1.6;
-  overflow: hidden;
   background-color: var(--bgColor);
   gap: 20px;
   height: 100vh;
@@ -30,9 +29,9 @@ body {
   gap: 20px;
   position: absolute;
   right: 40%;
+  top: 40px;
   height: 100vh;
   width: 60vw;
-  overflow-y: auto;
 }
 button {
   cursor: pointer;
@@ -93,4 +92,24 @@ p {
 #map h2 {
   font-size: 36px;
   z-index: -10000;
+}
+#outputContainer,
+#historyOutput {
+  display: grid;
+  place-items: center;
+}
+#historyOutput {
+  position: absolute;
+  top: 120%;
+  left: 3%;
+}
+li {
+  line-height: 35px;
+}
+#outputContainer {
+  line-height: 35px;
+  font-weight: bolder;
+}
+.invisible {
+  display: none !important;
 }

@@ -18,26 +18,40 @@
     ></script>
   </head>
   <body>
-    <div class="container">
-      <h1>Smart Location Finder</h1>
-      <!-- get location -->
-      <div class="inputContainer">
-        <input type="text" id="inputLocation" placeholder="Enter a location" />
-      </div>
-
-      <!-- button to find location -->
-      <div class="buttonContainer">
-        <div class="contain">
-          <button type="button" id="copyCoordinates">Copy Coordinates</button>
-          <button type="button" id="reset">Reset</button>
+    <div class="functionContainer">
+      <div class="container">
+        <h1>Smart Location Finder</h1>
+        <!-- get location -->
+        <div class="inputContainer">
+          <input
+            type="text"
+            id="inputLocation"
+            placeholder="Enter a location"
+          />
         </div>
 
-        <button id="findLocationButton" type="button">Find Location</button>
-      </div>
+        <!-- button to find location -->
+        <div class="buttonContainer">
+          <div class="contain">
+            <button type="button" id="copyCoordinates">Copy Coordinates</button>
+            <button type="button" id="reset">Reset</button>
+          </div>
 
-      <p>Press enter key to submit</p>
-      <!-- output container -->
-      <div id="outputContainer"></div>
+          <button id="findLocationButton" type="button">Find Location</button>
+        </div>
+
+        <p>Press enter key to submit</p>
+        <!-- output container -->
+        <div class="outputContainer">
+          <div id="outputContainer"></div>
+        </div>
+      </div>
+      <div id="historyOutput">
+        <details>
+          <summary>History</summary>
+          <ul id="historyList"></ul>
+        </details>
+      </div>
     </div>
     <div id="map" style="height: 100dvh; width: 40vw">
       <h2>Map Container</h2>
