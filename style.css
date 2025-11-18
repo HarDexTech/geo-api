@@ -78,7 +78,7 @@ button:focus {
   gap: 10px;
 }
 #map {
-  border: 2px solid black;
+  border: 2px dashed black;
   position: absolute;
   right: 0;
   border-top-left-radius: 15px;

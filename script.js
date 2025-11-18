@@ -53,7 +53,7 @@ function getLocation() {
         createOrUpdateMap(lat, lon);
 
         //add to history
-        addToHistory(input, lat, lon, results[0].formatted);
+        addToHistory(input, lat, lon, results[0].formatted, data);
       } else if (data.status.code <= 500) {
         // Handle server errors (4xx and 5xx status codes)
         output.innerHTML =
@@ -68,7 +68,10 @@ function getLocation() {
       console.error('Fetch failed:', error);
     });
 
-  historyOutput.classList.remove('invisible'); //make history section visible when a search is made
+  // Make history section visible after a delay
+  setTimeout(() => {
+    historyOutput.classList.remove('invisible'); //make history section visible when a search is made
+  }, 2000);
 }
 // Attach click event listener to search button
 findLocationButton.addEventListener('click', getLocation);
@@ -145,8 +148,11 @@ copyCoordinatesButton.addEventListener('click', function () {
 });
 
 //function to create history
-function addToHistory(input, lat, lon, address) {
+function addToHistory(input, lat, lon, address, data) {
   historyList.innerHTML = ``; //empty the history list before adding new entry
+
+  let requestFromApi = data;
+  console.log(requestFromApi);
 
   const historyObject = new Object(); //create a new object to store history entry
 
@@ -160,11 +166,29 @@ function addToHistory(input, lat, lon, address) {
 
   //loop through the search history array and display each entry in the history list
   for (let i = 0; i < searchHistory.length; i++) {
-    historyList.innerHTML += `<li><div class="history-item">
-    <strong>Location:</strong> ${searchHistory[i].Location},
-    <strong>Latitude:</strong> ${searchHistory[i].Latitude},
-    <strong>Longitude:</strong> ${searchHistory[i].Longitude},
-    <strong>Address:</strong> ${searchHistory[i].Address}
-  </div></li>`;
+    historyList.innerHTML += `
+    <div>
+      <li>
+        <input type="checkbox" id="checkbox-${i}" onchange="handleCheckBoxChange(${i}, this.checked)" style="width: 25px; height: 25px;"/>
+        <div class="history-item" id="historyItem">
+          <strong>Location:</strong> ${searchHistory[i].Location},
+          <strong>Latitude:</strong> ${searchHistory[i].Latitude},
+          <strong>Longitude:</strong> ${searchHistory[i].Longitude},
+          <strong>Address:</strong> ${searchHistory[i].Address}
+        </div>
+      </li>
+    </div>`;
+  }
+}
+
+let selectedItems = [];
+function handleCheckBoxChange(index, isChecked) {
+  let checkboxList = document.querySelectorAll('li div');
+  let selectedItemsChild = [];
+  // Get the history item at this index
+  if (isChecked) {
+    selectedItemsChild.push(checkboxList[index].innerText);
+    selectedItems.push(selectedItemsChild);
+    console.log(selectedItems);
   }
 }
