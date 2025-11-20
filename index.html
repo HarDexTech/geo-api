@@ -16,6 +16,10 @@
       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
       crossorigin=""
     ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
   </head>
   <body>
     <div class="functionContainer">
@@ -38,12 +42,18 @@
           </div>
 
           <button id="findLocationButton" type="button">Find Location</button>
+          <button id="calculateDistance" type="button">
+            Calculate Distance
+          </button>
         </div>
 
         <p>Press enter key to submit</p>
         <!-- output container -->
         <div class="outputContainer">
           <div id="outputContainer"></div>
+        </div>
+        <div class="distanceOutput">
+          <h3 id="distanceResult"></h3>
         </div>
       </div>
       <div id="historyOutput">

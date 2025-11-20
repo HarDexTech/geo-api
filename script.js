@@ -2,6 +2,8 @@
 
 // DOM Elements
 const findLocationButton = document.getElementById('findLocationButton');
+const calculateDistance = document.getElementById('calculateDistance');
+const distanceResult = document.getElementById('distanceResult');
 const output = document.getElementById('outputContainer');
 const historyOutput = document.getElementById('historyOutput');
 const historyList = document.getElementById('historyList');
@@ -9,8 +11,10 @@ const apikey = CONFIG.apiKey;
 const copyCoordinatesButton = document.getElementById('copyCoordinates');
 
 let searchHistory = []; // array to store search history
+let selectedItems = []; // array to store selected history items for distance calculation
 
 historyOutput.classList.add('invisible'); //hide history section initially
+calculateDistance.classList.add('invisible'); //hide history section initially
 
 // Global Variables
 let map = null; // global map variable for Leaflet map instance
@@ -30,6 +34,12 @@ function getLocation() {
     output.innerHTML = `<div class="error">Please enter a location</div>`;
     return;
   }
+
+  // Show loading message
+  output.innerHTML = `
+  <div>Loading...</div>
+  <i class="fas fa-spinner fa-spin"></i>
+  `;
 
   // Make API request to OpenCage Geocoding API
   fetch(
@@ -181,14 +191,64 @@ function addToHistory(input, lat, lon, address, data) {
   }
 }
 
-let selectedItems = [];
+//haversine formula to calculate distance between two coordinates
+function degToRad(degrees) {
+  return degrees * (Math.PI / 180);
+}
+
+function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371; // Radius of Earth in kilometers (can be adjusted for miles, etc.)
+
+  const dLat = degToRad(lat2 - lat1);
+  const dLon = degToRad(lon2 - lon1);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(degToRad(lat1)) *
+      Math.cos(degToRad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  const distance = R * c; // Distance in kilometers
+
+  console.log(distance);
+  distanceResult.innerHTML = `Distance between selected locations: ${distance.toFixed(
+    2
+  )} km`;
+}
+
+// Handle checkbox changes for selecting history items
 function handleCheckBoxChange(index, isChecked) {
   let checkboxList = document.querySelectorAll('li div');
   let selectedItemsChild = [];
   // Get the history item at this index
   if (isChecked) {
-    selectedItemsChild.push(checkboxList[index].innerText);
-    selectedItems.push(selectedItemsChild);
+    if (selectedItems.length >= 2) {
+      // Already have 2 selected - prevent this
+      alert('You can only select 2 locations');
+      // Uncheck the checkbox that was just clicked
+      document.getElementById(`checkbox-${index}`).checked = false;
+      return;
+    }
+    selectedItems.push(searchHistory[index]);
     console.log(selectedItems);
+    calculateDistance.classList.remove('invisible');
   }
 }
+
+calculateDistance.addEventListener('click', function () {
+  if (selectedItems.length !== 2) {
+    alert('Please select exactly 2 locations to calculate distance');
+    return;
+  }
+  const loc1 = selectedItems[0];
+  const loc2 = selectedItems[1];
+  calculateHaversineDistance(
+    loc1.Latitude,
+    loc1.Longitude,
+    loc2.Latitude,
+    loc2.Longitude
+  );
+});
