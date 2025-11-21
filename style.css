@@ -113,3 +113,9 @@ li {
 .invisible {
   display: none !important;
 }
+#historyDiv li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}

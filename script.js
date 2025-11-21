@@ -70,7 +70,7 @@ function getLocation() {
           'unable to geocode! Response code: ' + data.status.code;
       } else {
         // Handle unexpected server errors
-        console.log('server error');
+        alert('server error');
       }
     })
     .catch((error) => {
@@ -82,11 +82,12 @@ function getLocation() {
   setTimeout(() => {
     historyOutput.classList.remove('invisible'); //make history section visible when a search is made
   }, 2000);
+  selectedItems = [];
 }
 // Attach click event listener to search button
 findLocationButton.addEventListener('click', getLocation);
 
-// Updates the output container with location information
+// Updates the output html container with location information
 function updateOutputHTML(locationData, latitude, longitude) {
   output.innerHTML = `
       <div>Country: ${locationData.components.country}</div>
@@ -161,9 +162,6 @@ copyCoordinatesButton.addEventListener('click', function () {
 function addToHistory(input, lat, lon, address, data) {
   historyList.innerHTML = ``; //empty the history list before adding new entry
 
-  let requestFromApi = data;
-  console.log(requestFromApi);
-
   const historyObject = new Object(); //create a new object to store history entry
 
   //add properties to the history object
@@ -171,15 +169,16 @@ function addToHistory(input, lat, lon, address, data) {
   historyObject.Latitude = lat;
   historyObject.Longitude = lon;
   historyObject.Address = address;
+  historyObject.requestFromApi = data;
 
   searchHistory.push(historyObject); //add the new history object to the search history array
 
   //loop through the search history array and display each entry in the history list
   for (let i = 0; i < searchHistory.length; i++) {
     historyList.innerHTML += `
-    <div>
+    <div id="historyDiv">
       <li>
-        <input type="checkbox" id="checkbox-${i}" onchange="handleCheckBoxChange(${i}, this.checked)" style="width: 25px; height: 25px;"/>
+        <input type="checkbox" class="checkboxclass" id="checkbox-${i}" onchange="handleCheckBoxChange(${i}, this.checked)" style="width: 20px; height: 20px;"/>
         <div class="history-item" id="historyItem">
           <strong>Location:</strong> ${searchHistory[i].Location},
           <strong>Latitude:</strong> ${searchHistory[i].Latitude},
@@ -191,11 +190,12 @@ function addToHistory(input, lat, lon, address, data) {
   }
 }
 
-//haversine formula to calculate distance between two coordinates
+//change deg to radian for the haversine formula
 function degToRad(degrees) {
   return degrees * (Math.PI / 180);
 }
 
+//haversine formula to calculate distance between two coordinates
 function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // Radius of Earth in kilometers (can be adjusted for miles, etc.)
 
@@ -212,8 +212,6 @@ function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   const distance = R * c; // Distance in kilometers
-
-  console.log(distance);
   distanceResult.innerHTML = `Distance between selected locations: ${distance.toFixed(
     2
   )} km`;
@@ -221,10 +219,22 @@ function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
 
 // Handle checkbox changes for selecting history items
 function handleCheckBoxChange(index, isChecked) {
-  let checkboxList = document.querySelectorAll('li div');
-  let selectedItemsChild = [];
   // Get the history item at this index
   if (isChecked) {
+    // Show location on map when selected
+    createOrUpdateMap(
+      searchHistory[index].Latitude,
+      searchHistory[index].Longitude
+    );
+    // Update output with selected location details
+    updateOutputHTML(
+      searchHistory[0].requestFromApi.results[0],
+      searchHistory[index].Latitude,
+      searchHistory[index].Longitude
+    );
+    // Clear input field
+    document.getElementById('inputLocation').value = '';
+    // Add to selected items
     if (selectedItems.length >= 2) {
       // Already have 2 selected - prevent this
       alert('You can only select 2 locations');
@@ -233,11 +243,20 @@ function handleCheckBoxChange(index, isChecked) {
       return;
     }
     selectedItems.push(searchHistory[index]);
-    console.log(selectedItems);
     calculateDistance.classList.remove('invisible');
+  }
+  if (!isChecked) {
+    // Remove from selected items
+    selectedItems = selectedItems.filter(
+      (item, i) => i !== selectedItems.indexOf(searchHistory[index])
+    );
+    if (selectedItems.length === 0) {
+      calculateDistance.classList.add('invisible');
+    }
   }
 }
 
+//calculate distance button
 calculateDistance.addEventListener('click', function () {
   if (selectedItems.length !== 2) {
     alert('Please select exactly 2 locations to calculate distance');
