@@ -228,7 +228,7 @@ function handleCheckBoxChange(index, isChecked) {
     );
     // Update output with selected location details
     updateOutputHTML(
-      searchHistory[0].requestFromApi.results[0],
+      searchHistory[index].requestFromApi.results[index],
       searchHistory[index].Latitude,
       searchHistory[index].Longitude
     );
