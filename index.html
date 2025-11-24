@@ -22,7 +22,7 @@
     />
   </head>
   <body>
-    <div class="functionContainer">
+    <section class="home">
       <div class="container">
         <h1>Smart Location Finder</h1>
         <!-- get location -->
@@ -48,24 +48,91 @@
         </div>
 
         <p>Press enter key to submit</p>
+      </div>
+      <!-- loading state -->
+      <div class="loadingContainer invisible" id="loadingContainer">
+        <!-- From Uiverse.io by Nawsome -->
+        <svg class="pl" width="240" height="240" viewBox="0 0 240 240">
+          <circle
+            class="pl__ring pl__ring--a"
+            cx="120"
+            cy="120"
+            r="105"
+            fill="none"
+            stroke="#000"
+            stroke-width="20"
+            stroke-dasharray="0 660"
+            stroke-dashoffset="-330"
+            stroke-linecap="round"
+          ></circle>
+          <circle
+            class="pl__ring pl__ring--b"
+            cx="120"
+            cy="120"
+            r="35"
+            fill="none"
+            stroke="#000"
+            stroke-width="20"
+            stroke-dasharray="0 220"
+            stroke-dashoffset="-110"
+            stroke-linecap="round"
+          ></circle>
+          <circle
+            class="pl__ring pl__ring--c"
+            cx="85"
+            cy="120"
+            r="70"
+            fill="none"
+            stroke="#000"
+            stroke-width="20"
+            stroke-dasharray="0 440"
+            stroke-linecap="round"
+          ></circle>
+          <circle
+            class="pl__ring pl__ring--d"
+            cx="155"
+            cy="120"
+            r="70"
+            fill="none"
+            stroke="#000"
+            stroke-width="20"
+            stroke-dasharray="0 440"
+            stroke-linecap="round"
+          ></circle>
+        </svg>
+      </div>
+    </section>
+
+    <section class="results invisible" id="resultsSection">
+      <div class="row1">
+        <div class="outputText">Output Container</div>
         <!-- output container -->
-        <div class="outputContainer">
-          <div id="outputContainer"></div>
-        </div>
-        <div class="distanceOutput">
-          <h3 id="distanceResult"></h3>
+        <div class="resultContainer">
+          <div class="outputContainer">
+            <div id="outputContainer"></div>
+          </div>
+          <!-- output for distance -->
+          <div class="distanceOutput">
+            <h3 id="distanceResult"></h3>
+          </div>
         </div>
       </div>
-      <div id="historyOutput">
-        <details>
-          <summary>History</summary>
-          <ul id="historyList"></ul>
-        </details>
+
+      <div class="row2">
+        <!-- map container -->
+        <div id="map" style="height: 50dvh; width: 50vw">
+          <h2>Map Container</h2>
+        </div>
+
+        <!-- history section -->
+        <div id="historyOutput">
+          <details>
+            <summary>History</summary>
+            <ul id="historyList"></ul>
+          </details>
+        </div>
       </div>
-    </div>
-    <div id="map" style="height: 100dvh; width: 40vw">
-      <h2>Map Container</h2>
-    </div>
+    </section>
   </body>
   <script src="config.js"></script>
   <script src="script.js"></script>

@@ -9,12 +9,12 @@ const historyOutput = document.getElementById('historyOutput');
 const historyList = document.getElementById('historyList');
 const apikey = CONFIG.apiKey;
 const copyCoordinatesButton = document.getElementById('copyCoordinates');
+const targetSection = document.getElementById('resultsSection');
 
 let searchHistory = []; // array to store search history
 let selectedItems = []; // array to store selected history items for distance calculation
 
-historyOutput.classList.add('invisible'); //hide history section initially
-calculateDistance.classList.add('invisible'); //hide history section initially
+calculateDistance.classList.add('invisible');
 
 // Global Variables
 let map = null; // global map variable for Leaflet map instance
@@ -35,11 +35,11 @@ function getLocation() {
     return;
   }
 
-  // Show loading message
-  output.innerHTML = `
-  <div>Loading...</div>
-  <i class="fas fa-spinner fa-spin"></i>
-  `;
+  output.innerHTML = ``; // Clear previous output
+  distanceResult.innerHTML = ``; // Clear previous distance result
+
+  // Show loading icon
+  document.getElementById('loadingContainer').classList.remove('invisible');
 
   // Make API request to OpenCage Geocoding API
   fetch(
@@ -56,6 +56,9 @@ function getLocation() {
         lat = results[0].geometry.lat;
         lon = results[0].geometry.lng;
 
+        // Hide loading icon
+        document.getElementById('loadingContainer').classList.add('invisible');
+
         // Update the UI with location information
         updateOutputHTML(results[0], lat, lon);
 
@@ -64,6 +67,9 @@ function getLocation() {
 
         //add to history
         addToHistory(input, lat, lon, results[0].formatted, data);
+
+        targetSection.classList.remove('invisible');
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else if (data.status.code <= 500) {
         // Handle server errors (4xx and 5xx status codes)
         output.innerHTML =
@@ -78,10 +84,6 @@ function getLocation() {
       console.error('Fetch failed:', error);
     });
 
-  // Make history section visible after a delay
-  setTimeout(() => {
-    historyOutput.classList.remove('invisible'); //make history section visible when a search is made
-  }, 2000);
   selectedItems = [];
 }
 // Attach click event listener to search button
