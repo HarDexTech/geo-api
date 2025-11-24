@@ -7,7 +7,7 @@ const distanceResult = document.getElementById('distanceResult');
 const output = document.getElementById('outputContainer');
 const historyOutput = document.getElementById('historyOutput');
 const historyList = document.getElementById('historyList');
-const apikey = CONFIG.apiKey;
+const apikey = 'fa0137ef872e447fa8273066c9b1a133';
 const copyCoordinatesButton = document.getElementById('copyCoordinates');
 const targetSection = document.getElementById('resultsSection');
 
